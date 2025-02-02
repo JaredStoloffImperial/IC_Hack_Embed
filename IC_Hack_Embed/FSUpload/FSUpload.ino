@@ -59,6 +59,7 @@ void getSerialString(char* buffer, size_t bufferSize) {
   }
 }
 
+
 void viewDirectory() {
   Serial.println("Opening and printing the root directory...");
   Dir dir = LittleFS.openDir("");
@@ -113,7 +114,7 @@ void setup() {
   Serial.println("\nDo you want to display text from message.txt? Y/[n]");
   if (waitResponse()){
     // Optionally, read and display the contents of file2.txt
-    File i = LittleFS.open("/message.txt", "r");
+    File i = LittleFS.open("message.txt", "r");
     if (i) {
       while (i.available()) {
         Serial.write(i.read());  // Read and write the content to Serial
@@ -127,6 +128,21 @@ void setup() {
   }else{
     Serial.println("Process cancelled.");
   }
+
+  Serial.println("\nDo you want to display text from message.txt? Y/[n]");
+  if (waitResponse()){
+    // error to handle wrong file name or if file does not exist
+    int err = LittleFS.remove("testwrite.bin");
+    if (err != 0) {
+      Serial.println("File removed successfully.");
+    } else {
+      Serial.println("Delete fail. Please input correct file.");
+    }
+  }
+  else{
+    Serial.println("Process cancelled.");
+  }
+
   Serial.println("Setup complete.");
 }
 
