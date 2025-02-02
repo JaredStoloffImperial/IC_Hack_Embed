@@ -18,16 +18,19 @@ void setup() {
     return;
   }
 
-  int index = 0;
+  
   File i = LittleFS.open("/message.txt", "r");
+  int index = 0;
   if (i) {
     while (i.available()) {
       message[index++] = i.read();  // Read character-by-character
     }
-    Serial.println(message);
-    Serial.println("---------------");
     i.close();
   } else {
+    char default_message[23] = "Input Big5 report data";
+    for (uint8_t i = 0; i<24 ; i++) {
+      message[index++] = default_message[i];
+    }
     Serial.println("Failed to open message.txt.");
   }
 

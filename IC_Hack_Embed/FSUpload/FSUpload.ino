@@ -41,7 +41,7 @@ bool waitResponse() {
   return false;
 }
 
-void getResponse(char* buffer, size_t bufferSize) {
+void getSerialString(char* buffer, size_t bufferSize) {
   bool confirmation = false;
 
   while (!confirmation) {
@@ -61,7 +61,7 @@ void getResponse(char* buffer, size_t bufferSize) {
 
 void viewDirectory() {
   Serial.println("Opening and printing the root directory...");
-  Dir dir = LittleFS.openDir("/data");
+  Dir dir = LittleFS.openDir("");
   // or Dir dir = LittleFS.openDir("/data");
   while (dir.next()) {
       Serial.print(dir.fileName());
@@ -94,7 +94,7 @@ void setup() {
   Serial.println("\nDo you want to write message? Y/[n]");
   if (waitResponse()){
     Serial.print("Enter message:");
-    getResponse(buff, sizeof(buff));
+    getSerialString(buff, sizeof(buff));
     // Now write the message into message.txt
     File f = LittleFS.open("/message.txt", "w");  // Create or overwrite file2.txt
     if (f) {
@@ -118,6 +118,7 @@ void setup() {
       while (i.available()) {
         Serial.write(i.read());  // Read and write the content to Serial
       }
+      Serial.println();
       Serial.println("---------------");
       i.close();
     } else {
@@ -126,6 +127,7 @@ void setup() {
   }else{
     Serial.println("Process cancelled.");
   }
+  Serial.println("Setup complete.");
 }
 
 void loop() {
